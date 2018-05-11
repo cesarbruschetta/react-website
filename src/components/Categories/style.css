@@ -1,0 +1,9 @@
+.list-categories{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.list-categories li{
+    width: 50%;
+    flex-grow: 1;
+}
