@@ -20,14 +20,13 @@ class App extends Component {
     return (
       <Switch>
         <Route exact path='/' component={Home}/>
-        <Route path='/about' component={About}/>
-        <Route path='/contact' component={Contact}/>
-        <Route path='/categorie/:string/:string' component={BlogPost}/>
-        <Route path='/categorie/:string' component={CategoriePage}/>
+        <Route exact path='/about/' component={About}/>
+        <Route exact path='/contact/' component={Contact}/>
+        <Route path='/categorie/:categorie_uid/:post_uid/' component={BlogPost}/>
+        <Route path='/categorie/:categorie_uid/' component={CategoriePage}/>
         <Route path="*" component={NotFound}/>
       </Switch>
     );
   }
 }
-
 export default App;

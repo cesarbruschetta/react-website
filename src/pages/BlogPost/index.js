@@ -1,52 +1,60 @@
 import React, { Component, Fragment } from 'react';
+import { Link } from 'react-router-dom';
 
 import BasePage from '../Base';
 
+import firebase from './../../firebase.js';
+import './style.css';
+
+const DATE_OPTIONS = { year: 'numeric', month: 'long', day: 'numeric' };
+
 class BlogPost extends Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        categorie_uid: props.match.params.categorie_uid,
+        post_uid: props.match.params.post_uid,
+        post: {}
+      };
+    }
+    componentWillMount() {
+        let postRef = firebase.database().ref(
+          "/categorie/"+this.state.categorie_uid+"/"+this.state.post_uid);
+        postRef.on('value', (snapshot) => {
+          this.setState({
+            post: snapshot.val()
+          });
+        });
+    }
+    
     render() {
+        const post = this.state.post;
+        var cts = post.isoDate || post.pubDate,
+            cdate = (new Date(cts));
+
         return (
           <Fragment>
-            <BasePage>
+            <BasePage title="Noticia">
               <div>
                 {/* Title */}
-                  <h1 className="mt-4">Post Title</h1>
+                <h1 className="mt-4">{post.title}</h1>
                 
                 {/* Author */}
-                <p className="lead">
-                  by
-                  <a href="#">Start Bootstrap</a>
-                </p>
+                <p className="lead">por <Link to={`/categorie/${post.categorieUID}/`}>{post.categorieTitle}</Link></p>
       
                 <hr />
-      
                 {/* Date/Time */}
-                <p>Posted on January 1, 2018 at 12:00 PM</p>
+                <p>Postado em { cdate.toLocaleDateString('pt-BR', DATE_OPTIONS) } às {cdate.toLocaleTimeString("pt-BR") }</p>
       
                 <hr />
-      
                 {/* Preview Image */}
-                <img className="img-fluid rounded" src="http://placehold.it/900x300" />
+                <img className="img-fluid rounded" src={`https://picsum.photos/750/300?_i=${post.uid}`} />
       
                 <hr />
-      
                 {/* Post Content */}
-                <p className="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus, vero, obcaecati, aut, error quam sapiente nemo saepe quibusdam sit excepturi nam quia corporis eligendi eos magni recusandae laborum minus inventore?</p>
-      
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, tenetur natus doloremque laborum quos iste ipsum rerum obcaecati impedit odit illo dolorum ab tempora nihil dicta earum fugiat. Temporibus, voluptatibus.</p>
-      
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos, doloribus, dolorem iusto blanditiis unde eius illum consequuntur neque dicta incidunt ullam ea hic porro optio ratione repellat perspiciatis. Enim, iure!</p>
-      
-                <blockquote className="blockquote">
-                  <p className="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                  <footer className="blockquote-footer">Someone famous in
-                    <cite title="Source Title">Source Title</cite>
-                  </footer>
-                </blockquote>
-      
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error, nostrum, aliquid, animi, ut quas placeat totam sunt tempora commodi nihil ullam alias modi dicta saepe minima ab quo voluptatem obcaecati?</p>
-      
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum, dolor quis. Sunt, ut, explicabo, aliquam tenetur ratione tempore quidem voluptates cupiditate voluptas illo saepe quaerat numquam recusandae? Qui, necessitatibus, est!</p>
-      
+                <div className="content">
+                  <p className="lead" dangerouslySetInnerHTML={{__html: post.content}} ></p>
+                </div>
               </div>
               <hr />
             </BasePage>

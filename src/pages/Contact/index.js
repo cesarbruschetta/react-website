@@ -7,7 +7,7 @@ class Contact extends Component {
   render() {
     return (
       <Fragment>
-        <BasePage>
+        <BasePage title="Contato">
         
           Contato
         

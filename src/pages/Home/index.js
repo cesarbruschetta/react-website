@@ -12,10 +12,10 @@ class Home extends Component {
       homePosts: []
     }
   }
-  componentDidMount() {
+  componentWillMount() {
       let itemsRef = firebase.database().ref("/news");
         
-      itemsRef = itemsRef.orderByChild("isoDate").limitToLast(5);
+      itemsRef = itemsRef.orderByChild("isoDate").limitToLast(3);
       itemsRef.on('value', (snapshot) => {
         let items = snapshot.val();
         let values = [];
@@ -31,7 +31,7 @@ class Home extends Component {
   render() {
     return (
       <Fragment>
-        <BasePage>
+        <BasePage title="Noticias em Destaque">
          {this.state.homePosts.map((item, i) => {
             return (
               <HighlightPost item={item} key={i}/>

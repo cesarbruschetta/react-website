@@ -6,7 +6,6 @@ import Categories from '../../components/Categories';
 import Side from '../../components/Side';
 import Footer from '../../components/Footer';
 
-
 class BasePage extends Component {
     render() {
         return (
@@ -17,14 +16,8 @@ class BasePage extends Component {
                 <div className="row">
                   <div className="col-md-8">
                     {/* Blog Entries Colum */}
-          
-                    <h1 className="my-4">
-                      Page Heading
-                      <small>Secondary Text</small>
-                    </h1>
-                    
+                    <h1 className="my-4">{ this.props.title }</h1>
                     { this.props.children }
-          
                   </div>
                   <div className="col-md-4">
                     {/* Sidebar Widgets Column */}

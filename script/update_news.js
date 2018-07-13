@@ -6,6 +6,7 @@ let Parser = require('rss-parser');
 let firebase = require("firebase-admin");
 let slugify = require('slugify');
 let md5 = require('md5');
+let loremIpsum = require('lorem-ipsum');
  
 
 var serviceAccount = require("./serviceAccountKey.json");
@@ -38,26 +39,33 @@ for(var i = 0; i < rss.length;i++){
         var categorie_rss = slugify(data_rss.title),
             categorie_uid = md5(categorie_rss);  
 
-        db.ref("/categorie/"+categorie_rss).update({
+        var data = {
             "description": data_rss.description || categorie_rss,
             "title": data_rss.title,
             "uid": categorie_uid,
-        })
+            "slug": categorie_rss,
+        }
 
         for (var n = 0; n < data_rss.items.length; n++){
             var obj_news = data_rss.items[n];
+            
+            obj_news["contentSnippet"] = loremIpsum({
+                count: 100,     // Number of words, sentences, or paragraphs to generate.
+                units: 'words'  // Generate words, sentences, or paragraphs.
+            });
             obj_news["uid"] = md5(obj_news.title);
-            obj_news["categorie"] = categorie_uid;
+            obj_news["categorieUID"] = categorie_uid;
             obj_news["categorieTitle"] = data_rss.title;
-          
-            // Get a key for a new Post.
-             var newPostKey = db.ref().child('news').push().key;
-    
+
+            data[obj_news["uid"]] = obj_news;
+        
             // Write the new post's
             var updates = {};
-            updates['/news/' + newPostKey] = obj_news;
+            updates['/news/' + obj_news["uid"]] = obj_news;
             db.ref("/").update(updates);
         };
+    
+        db.ref("/categorie/"+categorie_uid).update(data);
     
     });
 };

@@ -11,16 +11,13 @@ class Categories extends Component {
       categories: []
     }
   }
-  componentDidMount() {
+  componentWillMount() {
       const itemsRef = firebase.database().ref("/categorie");
         itemsRef.on('value', (snapshot) => {
         let items = snapshot.val();
         let values = [];
         for (let item in items) {
-          values.push({
-            'title':items[item].title,
-            "slug":items[item].uid,
-          });
+          values.push(items[item]);
         }
         this.setState({
           categories: values
@@ -37,7 +34,7 @@ class Categories extends Component {
             {this.state.categories.map((item, i) => {
               return (
                 <li key={i}>
-                  <Link to={`/categorie/${item.slug}`}>{item.title}</Link>
+                  <Link to={`/categorie/${item.uid}`}>{item.title}</Link>
                 </li>
               )
             })}

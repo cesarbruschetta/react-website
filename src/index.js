@@ -12,5 +12,3 @@ ReactDOM.render(
   </BrowserRouter>
 , document.getElementById('root'));
 registerServiceWorker();
-// https://css-tricks.com/intro-firebase-react
-//https://github.com/n0ks/twitelum-react/blob/master/
