@@ -48,7 +48,7 @@ class BlogPost extends Component {
       
                 <hr />
                 {/* Preview Image */}
-                <img className="img-fluid rounded" src={`https://picsum.photos/750/300?_i=${post.uid}`} />
+                <img className="img-fluid rounded" src={`https://picsum.photos/750/300?_i=${post.uid}`} alt="" />
       
                 <hr />
                 {/* Post Content */}

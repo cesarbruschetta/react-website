@@ -20,7 +20,7 @@ class Nagigation extends Component {
                 <NavLink exact to="/about" className="nav-link">Sobre</NavLink>
               </li>
               <li className="nav-item">
-                <NavLink exact className="nav-link" to="/">Services</NavLink>
+                <NavLink exact to="/service" className="nav-link">Services</NavLink>
               </li>
               <li className="nav-item">
                 <NavLink exact to="/contact" className="nav-link">Contato</NavLink>
